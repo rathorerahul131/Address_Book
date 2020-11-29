@@ -114,6 +114,24 @@ addRecord()
 		
 }
 
+displayRecord()
+{
+	
+	while true
+	do
+		echo "To display a record, enter the Contact Number of the person."
+		read input
+		echo "The records for \"$input\" is :"
+		grep "$input" addressbook.csv    
+		returnStatus=`echo $?`
+		if [ $returnStatus -eq 1 ]
+		then
+			echo "No records found with last name of \"$input\"."
+		fi
+		
+	done
+}
+
 echo "Welcome to the Address Book"
 
 echo "Hello, what would you like to do with your address book?
@@ -127,7 +145,7 @@ read input
 
 case $input in
 	1) addRecord;;
-	2) showRecord;;
+	2) displayRecord;;
 	3) editRecord;;
 	4) removeRecord;;
 	5) searchRecord;;
