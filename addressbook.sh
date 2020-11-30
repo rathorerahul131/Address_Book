@@ -200,7 +200,7 @@ editRecord()
 				if [ $number -eq $lineNumber ]
 				then
 					echo "Enter the correct data in the below format:"
-					echo "first Name, Last Name, Address, City, Zip code, email,Phone Number"
+					echo "firstName,LastName,Address,City,Zipcode,email,Phone Number"
 					read edit
 					lineChange="${lineNumber}s"
 					sed -i -e "$lineChange/.*/$edit/" addressbook.csv
@@ -212,6 +212,14 @@ editRecord()
 	done		
 }
 
+viewAllRecords(){
+
+		echo "Here is the list of all the records"
+		cat addressbook.csv | sed -e 's/,,/, ,/g' | column -s, -t 
+
+
+}
+
 echo "Welcome to the Address Book"
 
 echo "Hello, what would you like to do with your address book?
@@ -219,7 +227,8 @@ echo "Hello, what would you like to do with your address book?
 	2) T Display Record 
 	3) To Edit a Record 
 	4) To Remove a Record
-	5) To Search the Record "
+	5) To Search the Record 
+	6) To View all the Records"
 	
 read input
 
@@ -229,6 +238,7 @@ case $input in
 	3) editRecord;;
 	4) removeRecord;;
 	5) searchRecord;;
+	6) viewAllRecords;;
 	*) echo "Invalid Input! Please enter from the displayed options"
 esac
 
