@@ -101,7 +101,8 @@ contactNumber(){
 
 }
 addRecord()
-{
+{		
+		echo "Enter the required Details"
 		firstName="$(first_Name)"
 		lastName=$(last_Name)
 		address=$(Address)
@@ -111,14 +112,23 @@ addRecord()
 		mobileNumber=$(contactNumber)
 		echo  $firstName,$lastName,$address,$cityName,$zip,$email,$mobileNumber >> addressbook.csv
 		echo "The entry is successfully added to the address book."
+		echo -e "Enter 'c' to continue \n 'm' to go back to Main Menu"
+		read input
+		if [[ "$input" == 'c' ]]
+		then
+			addRecord
+		elif [[ "$input" == 'm' ]]
+		then
+			menu
+		fi
+		
 		
 }
 
 displayRecord()
 {
 	
-	while true
-	do
+	
 		echo "To display a record, enter the Contact Number of the person."
 		read input
 		echo "The records for \"$input\" is :"
@@ -128,14 +138,21 @@ displayRecord()
 		then
 			echo "No records found with last name of \"$input\"."
 		fi
-		
-	done
+		echo -e "Enter 'c' to continue \n 'm' to go back to Main Menu"
+		read input
+		if [[ "$input" == 'c' ]]
+		then
+			displayRecord
+		elif [[ "$input" == 'm' ]]
+		then
+			menu
+		fi
+	
 }
 
 removeRecord()
 {
-	while true
-	do
+	
 		echo "To remove a record, enter contact no. of the person."
 		read input
 		echo "Listing records for \"$input\":"
@@ -158,14 +175,21 @@ removeRecord()
 				fi
 			done
 		fi
-	done
+		echo -e "Enter 'c' to continue \n 'm' to go back to Main Menu"
+		read input
+		if [[ "$input" == 'c' ]]
+		then
+			removeRecord
+		elif [[ "$input" == 'm' ]]
+		then
+			menu
+		fi
 }
 
 searchRecord()
 {
-	while true
-	do
-		echo "To search for a record, enter any search string, e.g. last name or email address (case sensitive)."
+	
+		echo "To search for a record, enter contact number of the person."
 		read input
 		echo "List records for \"$input\" is :"
 		grep "$input" addressbook.csv
@@ -174,16 +198,22 @@ searchRecord()
 		then
 			echo "No records found for \"$input\"."
 		fi
-	done
+		echo -e "Enter 'c' to continue \n 'm' to go back to Main Menu"
+		read input
+		if [[ "$input" == 'c' ]]
+		then
+			searchRecord
+		elif [[ "$input" == 'm' ]]
+		then
+			menu
+		fi
 }
 
 
 editRecord()
 {
-	echo
-	while true
-	do
-		echo "To edit a record, enter any search string, e.g. last name or email address (case sensitive)."
+	
+		echo "To edit a record, enter First Name of the person."
 		read input
 		echo "Listing records for \"$input\":"
 		grep -n "$input" addressbook.csv
@@ -208,38 +238,56 @@ editRecord()
 				fi
 			done
 		fi
-		echo
-	done		
+		echo -e "Enter 'c' to continue \n 'm' to go back to Main Menu"
+		read input
+		if [[ "$input" == 'c' ]]
+		then
+			editRecord
+		elif [[ "$input" == 'm' ]]
+		then
+			menu
+		fi		
 }
 
 viewAllRecords(){
 
 		echo "Here is the list of all the records"
 		cat addressbook.csv | sed -e 's/,,/, ,/g' | column -s, -t 
+		echo -e "Enter 'm' to go back to Main Menu"
+		read input
+		if [[ "$input" == 'm' ]]
+		then
+			menu
+		fi
 
 
 }
 
-echo "Welcome to the Address Book"
 
-echo "Hello, what would you like to do with your address book?
-	1) To Add Record 
-	2) T Display Record 
-	3) To Edit a Record 
-	4) To Remove a Record
-	5) To Search the Record 
-	6) To View all the Records"
+menu(){
+	echo "Hello, what would you like to do with your address book?
+		1) To Add Record 
+		2) T Display Record 
+		3) To Edit a Record 
+		4) To Remove a Record
+		5) To Search the Record 
+		6) To View all the Records
+		7) To quit"
 	
-read input
+	read input
 
-case $input in
-	1) addRecord;;
-	2) displayRecord;;
-	3) editRecord;;
-	4) removeRecord;;
-	5) searchRecord;;
-	6) viewAllRecords;;
-	*) echo "Invalid Input! Please enter from the displayed options"
-esac
+	case $input in
+		1) addRecord;;
+		2) displayRecord;;
+		3) editRecord;;
+		4) removeRecord;;
+		5) searchRecord;;
+		6) viewAllRecords;;
+		7) break;;
+		*) echo "Invalid Input! Please enter from the displayed options"
+	esac
+}
 
+echo "Welcome to the Address Book"
+menu
 echo "Thank you! Have a Great Day!"
