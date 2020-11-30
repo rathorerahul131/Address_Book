@@ -132,6 +132,35 @@ displayRecord()
 	done
 }
 
+removeRecord()
+{
+	while true
+	do
+		echo "To remove a record, enter contact no. of the person."
+		read input
+		echo "Listing records for \"$input\":"
+		grep -n "$input" addressbook.csv
+		returnStatus=`echo $?`
+		if [ $returnStatus -eq 1 ]
+		then
+			echo "No records found for \"$input\""
+		else
+			echo "Enter the line number of the record you want to remove."
+			read lineNumber
+			for line in `grep -n "$input" addressbook.csv`
+			do
+				number=`echo "$line" | cut -c1`
+				if [ $number -eq $lineNumber ]
+				then
+					lineRemove="${lineNumber}d"
+					sed -i -e "$lineRemove" addressbook.csv
+					echo "The record was removed from the address book."
+				fi
+			done
+		fi
+	done
+}
+
 echo "Welcome to the Address Book"
 
 echo "Hello, what would you like to do with your address book?
