@@ -161,6 +161,22 @@ removeRecord()
 	done
 }
 
+searchRecord()
+{
+	while true
+	do
+		echo "To search for a record, enter any search string, e.g. last name or email address (case sensitive)."
+		read input
+		echo "List records for \"$input\" is :"
+		grep "$input" addressbook.csv
+		returnStatus=`echo $?`
+		if [ $returnStatus -eq 1 ]
+		then
+			echo "No records found for \"$input\"."
+		fi
+	done
+}
+
 echo "Welcome to the Address Book"
 
 echo "Hello, what would you like to do with your address book?
