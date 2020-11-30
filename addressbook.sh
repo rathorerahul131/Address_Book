@@ -177,6 +177,41 @@ searchRecord()
 	done
 }
 
+
+editRecord()
+{
+	echo
+	while true
+	do
+		echo "To edit a record, enter any search string, e.g. last name or email address (case sensitive)."
+		read input
+		echo "Listing records for \"$input\":"
+		grep -n "$input" addressbook.csv
+		ReturnStatus=`echo $?`
+		if [ $ReturnStatus -eq 1 ]
+		then
+			echo "No records found for \"$input\""
+		else
+			echo "Enter the line number that you'd like to edit."
+			read lineNumber
+			for line in `grep -n "$input" addressbook.csv`
+			do
+				number=`echo "$line" | cut -c1`
+				if [ $number -eq $lineNumber ]
+				then
+					echo "Enter the correct data in the below format:"
+					echo "first Name, Last Name, Address, City, Zip code, email,Phone Number"
+					read edit
+					lineChange="${lineNumber}s"
+					sed -i -e "$lineChange/.*/$edit/" addressbook.csv
+					echo "The change has been made."
+				fi
+			done
+		fi
+		echo
+	done		
+}
+
 echo "Welcome to the Address Book"
 
 echo "Hello, what would you like to do with your address book?
